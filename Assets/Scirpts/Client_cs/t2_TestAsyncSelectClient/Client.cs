@@ -73,15 +73,8 @@ public class Client : MonoBehaviour
     public void TestMain()
     {
         //---------------test------------------ 
-
-        //MsgMove msgMove = new MsgMove();
-        //byte[] bs = MsgBase.EncodeName(msgMove);
-
-        //int count;
-        //string name = MsgBase.DecodeName(bs, 0, out count);
-
-        //Debug.Log(name); //MsgMove
-        //Debug.Log(count); //2+7=9
+        MsgPing pingMsg = new MsgPing();
+        NetManager.Send(pingMsg);
 
     }
 

@@ -8,7 +8,7 @@ from typing import List, Dict
 from net.ClientState import ClientState
 from net.ByteArray import ByteArray
 from net.MsgBase import MsgBase
-from proto.SysMsg import MsgPing, MsgPong   
+from proto.Messages import MsgPing, MsgPong   
 class EventHandler:
     @staticmethod
     def on_disconnect(c):
@@ -34,11 +34,11 @@ class EventHandler:
                 break
 class MsgHandler:
     @staticmethod
-    def MsgPing(c, msg_base):
+    def MsgPing(client, msg_base):
         print("MsgPing")
-        c.last_ping_time = NetManager.get_time_stamp()
+        client.last_ping_time = NetManager.get_time_stamp()
         msg_pong = MsgPong()
-        NetManager.send(c, msg_pong)
+        NetManager.send(client, msg_pong)
 
 class NetManager:
     # Listening socket
@@ -136,35 +136,35 @@ class NetManager:
 
     @staticmethod
     def on_receive_data(state):
-        read_buff = state.read_buff
+        read_buffer = state.read_buffer
 
         while True:
             # Check if we have enough data for the message length
-            if read_buff.length < 2:
+            if read_buffer.length < 2:
                 break
 
             # Peek message length
-            body_length = int.from_bytes(read_buff.bytes[read_buff.read_idx:read_buff.read_idx+2], byteorder='little')
+            body_length = int.from_bytes(read_buffer.bytes[read_buffer.read_idx:read_buffer.read_idx+2], byteorder='little')
 
             # Check if we have the full message
-            if read_buff.length < 2 + body_length:
+            if read_buffer.length < 2 + body_length:
                 break
 
-            read_buff.read_idx += 2  # Move past the length field
+            read_buffer.read_idx += 2  # Move past the length field
 
             # Decode message name
-            proto_name, name_count = MsgBase.decode_name(read_buff.bytes, read_buff.read_idx)
+            proto_name, name_count = MsgBase.decode_name(read_buffer.bytes, read_buffer.read_idx)
             if not proto_name:
                 print("Failed to decode message name")
                 NetManager.close(state)
                 return
 
-            read_buff.read_idx += name_count
+            read_buffer.read_idx += name_count
 
             # Decode message body
             body_count = body_length - name_count
-            msg_base = MsgBase.decode(proto_name, read_buff.bytes, read_buff.read_idx, body_count)
-            read_buff.read_idx += body_count
+            msg_base = MsgBase.decode(proto_name, read_buffer.bytes, read_buffer.read_idx, body_count)
+            read_buffer.read_idx += body_count
 
             # Handle message
             print(f"Received message: {proto_name}")
@@ -175,7 +175,7 @@ class NetManager:
                 print(f"No handler for message: {proto_name}")
 
             # Move buffer if necessary
-            read_buff.check_and_move_bytes()
+            read_buffer.check_and_move_bytes()
 
     @staticmethod
     def timer():

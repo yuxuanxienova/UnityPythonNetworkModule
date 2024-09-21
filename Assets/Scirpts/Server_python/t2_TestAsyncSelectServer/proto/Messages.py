@@ -11,3 +11,8 @@ class MsgPong(MsgBase):
     def __init__(self):
         super().__init__()
         self.protoName = "MsgPong"
+class MyMessage(MsgBase):
+    def __init__(self):
+        super().__init__()
+        self.protoName = "MyMessage"
+        self.content = ""
