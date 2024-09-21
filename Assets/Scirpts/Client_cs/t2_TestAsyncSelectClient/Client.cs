@@ -1,0 +1,88 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System;
+
+public class Client : MonoBehaviour
+{
+    string SERVER_HOST = "127.0.0.1";
+    int SERVER_PORT = 65432;
+
+    //开始
+    void Start()
+    {
+        NetManager.AddEventListener(NetManager.NetEvent.ConnectSucc, OnConnectSucc);
+        NetManager.AddEventListener(NetManager.NetEvent.ConnectFail, OnConnectFail);
+        NetManager.AddEventListener(NetManager.NetEvent.Close, OnConnectClose);
+        
+    }
+
+    //---------------------------连接服务端----------------------------------
+
+    //连接成功回调
+    public void OnConnectSucc(string err) 
+    {
+        Debug.Log("OnConnectSucc");
+        //TODO:进入游戏
+    }
+
+    //连接失败回调
+    public void OnConnectFail(string err) 
+    {
+        Debug.Log("OnConnectFail" + err);
+        //TODO:弹出提示框（连接失败，请重试）
+
+    }
+
+    //关闭连接
+    public void OnConnectClose(string err) 
+    {
+        Debug.Log("OnConnectClose");
+        //TODO:弹出提示框（网络断开）
+        //TODO:弹出提示框（重新连接）
+
+    }
+
+    //玩家点击连接按钮
+    public void OnConnectClick()
+    {
+        NetManager.Connect(SERVER_HOST, SERVER_PORT);
+        //TODO:开始转圈，提示“连接中”
+    }
+
+    //主动关闭
+    public void OnCloseCLick() 
+    {
+        NetManager.Close();
+    }
+
+
+    public void Update()
+    {
+        NetManager.Update();
+
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+
+            TestMain();
+
+        }
+    }
+
+    public void TestMain()
+    {
+        //---------------test------------------ 
+
+        //MsgMove msgMove = new MsgMove();
+        //byte[] bs = MsgBase.EncodeName(msgMove);
+
+        //int count;
+        //string name = MsgBase.DecodeName(bs, 0, out count);
+
+        //Debug.Log(name); //MsgMove
+        //Debug.Log(count); //2+7=9
+
+    }
+
+}
