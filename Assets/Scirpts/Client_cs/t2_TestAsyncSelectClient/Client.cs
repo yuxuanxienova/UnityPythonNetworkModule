@@ -14,6 +14,9 @@ public class Client : MonoBehaviour
         NetManager.AddEventListener(NetManager.NetEvent.ConnectSucc, OnConnectSucc);
         NetManager.AddEventListener(NetManager.NetEvent.ConnectFail, OnConnectFail);
         NetManager.AddEventListener(NetManager.NetEvent.Close, OnConnectClose);
+
+        //----test----
+        NetManager.AddMsgListener("MsgTest", OnMsgTest);
         
     }
 
@@ -69,15 +72,21 @@ public class Client : MonoBehaviour
 
         }
     }
-
+//---------------------------------------Test------------------------------------ 
     public void TestMain()
     {
-        //---------------test------------------ 
+        
         MsgTest msg = new MsgTest();
         msg.str = "Hello";
         msg.num = 100;
         NetManager.Send(msg);
 
+    }
+
+    public void OnMsgTest(MsgBase msgBase) 
+    {
+        MsgTest msg = (MsgTest)msgBase;
+        Debug.Log("OnMsgTest: str=" + msg.str + " num=" + msg.num);
     }
 
 }

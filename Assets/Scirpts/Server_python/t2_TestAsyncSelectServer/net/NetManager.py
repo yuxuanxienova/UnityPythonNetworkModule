@@ -8,7 +8,7 @@ from typing import List, Dict
 from net.ClientState import ClientState
 from net.ByteArray import ByteArray
 from net.MsgBase import MsgBase
-from proto.Messages import MsgPing, MsgPong   
+from proto.Messages import MsgPing, MsgPong , MsgTest
 class EventHandler:
     @staticmethod
     def on_disconnect(c):
@@ -43,6 +43,12 @@ class MsgHandler:
     @staticmethod
     def MsgTest(client, msg_base):
         print("MsgTest" + msg_base.str + str(msg_base.num) )
+        msg_test = MsgTest()
+        msg_test.str = "Hi from server"
+        msg_test.num = 123
+        NetManager.send(client, msg_test)
+        
+    
         
 
 
