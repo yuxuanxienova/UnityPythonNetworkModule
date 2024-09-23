@@ -34,15 +34,15 @@ class EventHandler:
                 break
 class MsgHandler:
     @staticmethod
-    def MsgPing(client, msg_base):
+    def MsgPing(client:ClientState, msg_base):
         print("MsgPing")
         client.last_ping_time = NetManager.get_time_stamp()
         msg_pong = MsgPong()
         NetManager.send(client, msg_pong)
         
     @staticmethod
-    def MsgTest(client, msg_base):
-        print("MsgTest" + msg_base.str + str(msg_base.num) )
+    def MsgTest(client:ClientState, msg_base):
+        print("[Msg Received][client:{0}]MsgTest".format(client.client_address) + msg_base.str + str(msg_base.num) )
         msg_test = MsgTest()
         msg_test.str = "Hi from server"
         msg_test.num = 123

@@ -4,5 +4,6 @@ UserSettings/
 Library/
 ProjectSettings/
 Temp/
+Build/
 *.meta
 
