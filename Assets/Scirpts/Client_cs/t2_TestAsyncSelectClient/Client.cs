@@ -73,8 +73,10 @@ public class Client : MonoBehaviour
     public void TestMain()
     {
         //---------------test------------------ 
-        MsgPing pingMsg = new MsgPing();
-        NetManager.Send(pingMsg);
+        MsgTest msg = new MsgTest();
+        msg.str = "Hello";
+        msg.num = 100;
+        NetManager.Send(msg);
 
     }
 

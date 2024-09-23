@@ -39,6 +39,12 @@ class MsgHandler:
         client.last_ping_time = NetManager.get_time_stamp()
         msg_pong = MsgPong()
         NetManager.send(client, msg_pong)
+        
+    @staticmethod
+    def MsgTest(client, msg_base):
+        print("MsgTest" + msg_base.str + str(msg_base.num) )
+        
+
 
 class NetManager:
     # Listening socket
